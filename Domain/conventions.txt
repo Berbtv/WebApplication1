@@ -1,0 +1,6 @@
+VehicleOwner // PascalCase
+vehicleOwner // camelCase   .Net için önemli olanlar (çoðunlukla)
+
+
+vehicle_owner // snake_case
+vehicle-owner // kebab-case

@@ -1,0 +1,6 @@
+taþýt mükellefi, akaryakýt istasyonu ve montaj firmasý için baþvuru servisleri
+ad soyad telefon doðum tarihi required
+akaryakýt istasyonu için ayrýca epdk no required
+montaj firmasý için ayrýca vergi no required
+bunlarý da db ye kaydet
+modeller, requestler, serviceler ve controllerlarý oluþtur
