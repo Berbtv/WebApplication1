@@ -11,35 +11,50 @@ using Domain.Model;
 
 namespace Application.Services
 {
-    public class VehicleOwnerService : CompanyService, IVehicleOwnerService
+    public class VehicleOwnerService : CompanyService<VehicleOwnerDto, VehicleOwner>
     {
         public VehicleOwnerService(IAppDbContext appDbContext, IUnitofWork unitofWork) : base(appDbContext, unitofWork)
         {
         }
 
-        public async Task<Result> AcceptApplication(VehicleOwnerDto vehicleOwner)
+        public override string CompanyType => nameof(VehicleOwnerDto);
+
+        protected override void MapCustomProperties(VehicleOwnerDto companyDto, VehicleOwner entity)
         {
-            var result = Validate(vehicleOwner);
-            if (!result.IsSuccess)
-            {
-                return result;
-            }
-
-            var model = new VehicleOwner();
-            base.CreateCompany(vehicleOwner, model);
             
-            AppDbContext.VehicleOwners.Add(model);
-            await UnitofWork.SaveChangesAsync();
-
-            return new Result { IsSuccess = true };
-
-        }
-
-        protected Result Validate(VehicleOwnerDto vehicleOwner)
-        { 
-            var result= base.Validate(vehicleOwner);
-            return result;
         }
 
     }
+
+    //public class VehicleOwnerService : CompanyService, IVehicleOwnerService
+    //{
+    //    public VehicleOwnerService(IAppDbContext appDbContext, IUnitofWork unitofWork) : base(appDbContext, unitofWork)
+    //    {
+    //    }
+
+    //    public async Task<Result> AcceptApplication(VehicleOwnerDto vehicleOwner)
+    //    {
+    //        var result = Validate(vehicleOwner);
+    //        if (!result.IsSuccess)
+    //        {
+    //            return result;
+    //        }
+
+    //        var model = new VehicleOwner();
+    //        base.CreateCompany(vehicleOwner, model);
+
+    //        AppDbContext.VehicleOwners.Add(model);
+    //        await UnitofWork.SaveChangesAsync();
+
+    //        return new Result { IsSuccess = true };
+
+    //    }
+
+    //    protected Result Validate(VehicleOwnerDto vehicleOwner)
+    //    { 
+    //        var result= base.Validate(vehicleOwner);
+    //        return result;
+    //    }
+
+    //}
 }

@@ -11,5 +11,20 @@ namespace Application.Dto.Responses
         public bool IsSuccess { get; set; }
         public string ErrorMessage { get; set; }
         public int ErrorCode { get; set; }
+
+        public static Result Success()
+        {
+            return new Result { IsSuccess = true };
+        }
+
+        public static Result Failure(int errorCode, string errorMessage)
+        {
+            return new Result
+            {
+                IsSuccess = false,
+                ErrorCode = errorCode,
+                ErrorMessage = errorMessage
+            };
+        }
     }
 }

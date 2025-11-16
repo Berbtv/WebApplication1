@@ -10,9 +10,10 @@ namespace Application.Interfaces.Data
 {
     public interface IAppDbContext
     {
-         DbSet<VehicleOwner> VehicleOwners { get; set; }
-         DbSet<Company> Companies { get; set; } //?
-         DbSet<ServiceCompany> ServiceCompanies { get; set; }
-         DbSet<FuelStation> FuelStations { get; set; }
+        DbSet<VehicleOwner> VehicleOwners { get; set; }
+        DbSet<ServiceCompany> ServiceCompanies { get; set; }
+        DbSet<FuelStation> FuelStations { get; set; }
+
+        DbSet<TEntity> Set<TEntity>() where TEntity : class;
     }
 }

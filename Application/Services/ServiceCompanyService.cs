@@ -11,51 +11,82 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class ServiceCompanyService : CompanyService, IServiceCompanyService
+    public class ServiceCompanyService : CompanyService<ServiceCompanyDto, ServiceCompany>
     {
         public ServiceCompanyService(IAppDbContext appDbContext, IUnitofWork unitofWork) : base(appDbContext, unitofWork)
         {
         }
 
-        public async Task <Result> AcceptApplication(ServiceCompanyDto serviceCompany)
+        public override string CompanyType => nameof(ServiceCompanyDto);
+
+        protected override void MapCustomProperties(ServiceCompanyDto companyDto, ServiceCompany entity)
         {
-            var result = Validate(serviceCompany);
-            if (!result.IsSuccess)
-            {
-                return result;
-            }
-
-            var model = new ServiceCompany();
-            base.CreateCompany(serviceCompany, model);
-            model.Vkn = serviceCompany.Vkn;
-
-            AppDbContext.ServiceCompanies.Add(model);
-            await UnitofWork.SaveChangesAsync();
-
-            return new Result { IsSuccess = true };
+            entity.Vkn = companyDto.Vkn;
         }
 
-        protected Result Validate(ServiceCompanyDto serviceCompany)
-        {
-            var baseResult = base.Validate(serviceCompany);
 
+        protected override Result Validate(ServiceCompanyDto companyDto)
+        {
+            var baseResult = base.Validate(companyDto);
             if (!baseResult.IsSuccess)
             {
                 return baseResult;
             }
 
-            if(serviceCompany.Vkn <= 0)
+            if (companyDto.Vkn <= 0)
             {
-                return new Result
-                {
-                    IsSuccess = false,
-                    ErrorCode = 300,
-                    ErrorMessage = "Vkn is required and must be greater than zero"
-                };
+                return Result.Failure(300, "Vkn is required and must be greater than zero");
             }
-            return new Result { IsSuccess = true };
+
+            return Result.Success();
         }
-
-
     }
+
+    //public class ServiceCompanyService : CompanyService, IServiceCompanyService
+    //{
+    //    public ServiceCompanyService(IAppDbContext appDbContext, IUnitofWork unitofWork) : base(appDbContext, unitofWork)
+    //    {
+    //    }
+
+    //    public async Task <Result> AcceptApplication(ServiceCompanyDto serviceCompany)
+    //    {
+    //        var result = Validate(serviceCompany);
+    //        if (!result.IsSuccess)
+    //        {
+    //            return result;
+    //        }
+
+    //        var model = new ServiceCompany();
+    //        base.CreateCompany(serviceCompany, model);
+    //        model.Vkn = serviceCompany.Vkn;
+
+    //        AppDbContext.ServiceCompanies.Add(model);
+    //        await UnitofWork.SaveChangesAsync();
+
+    //        return new Result { IsSuccess = true };
+    //    }
+
+    //    protected Result Validate(ServiceCompanyDto serviceCompany)
+    //    {
+    //        var baseResult = base.Validate(serviceCompany);
+
+    //        if (!baseResult.IsSuccess)
+    //        {
+    //            return baseResult;
+    //        }
+
+    //        if(serviceCompany.Vkn <= 0)
+    //        {
+    //            return new Result
+    //            {
+    //                IsSuccess = false,
+    //                ErrorCode = 300,
+    //                ErrorMessage = "Vkn is required and must be greater than zero"
+    //            };
+    //        }
+    //        return new Result { IsSuccess = true };
+    //    }
+
+
+    //}
 }
